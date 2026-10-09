@@ -8,14 +8,14 @@ Backend monorepo (pnpm workspaces).
 - `packages/contracts` — shared request/response contracts, one folder per module
 - `packages/db` — database schema, migrations and seeds
 - `packages/api-client` — typed client for the API
-- `packages/config` — shared tsconfig, ESLint and Vitest config
+- `packages/config` — shared ESLint and Vitest config (base TypeScript config is `tsconfig.base.json` at the root)
 - `infra` — Docker, Compose and database setup
 - `tools/generators` — scaffolding for new modules and resources
 - `docs` — architecture decision records (`adr`) and ER diagrams (`erd`)
 
 ## Getting started
 
-Requires Node 24+ and pnpm.
+Requires Node 24 (see `.nvmrc`) and pnpm.
 
 ```sh
 pnpm install

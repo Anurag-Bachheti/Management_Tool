@@ -6,6 +6,10 @@ services:
     image: postgres:17
     environment:
       POSTGRES_USER: postgres
+      # Require passwords for TCP connections inside the container too (the image
+      # defaults loopback to trust). Socket connections stay trust, so db:psql works.
+      # Only applied when the data volume is first initialized.
+      POSTGRES_INITDB_ARGS: "--auth-host=scram-sha-256"
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
       OPSFLOW_OWNER_PASSWORD: ${OPSFLOW_OWNER_PASSWORD:?set OPSFLOW_OWNER_PASSWORD in .env}
       OPSFLOW_APP_PASSWORD: ${OPSFLOW_APP_PASSWORD:?set OPSFLOW_APP_PASSWORD in .env}
