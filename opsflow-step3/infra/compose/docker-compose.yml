@@ -1,0 +1,26 @@
+# Local development services. Start with `pnpm db:up` from the repo root.
+name: opsflow
+
+services:
+  postgres:
+    image: postgres:17
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
+      OPSFLOW_OWNER_PASSWORD: ${OPSFLOW_OWNER_PASSWORD:?set OPSFLOW_OWNER_PASSWORD in .env}
+      OPSFLOW_APP_PASSWORD: ${OPSFLOW_APP_PASSWORD:?set OPSFLOW_APP_PASSWORD in .env}
+      OPSFLOW_WORKER_PASSWORD: ${OPSFLOW_WORKER_PASSWORD:?set OPSFLOW_WORKER_PASSWORD in .env}
+    ports:
+      - "127.0.0.1:5432:5432"          # reachable from this Mac only, not the network
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ../db/bootstrap-roles.sql:/opsflow/bootstrap-roles.sql:ro
+      - ./postgres-init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d opsflow"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+
+volumes:
+  pgdata:
