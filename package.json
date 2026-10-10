@@ -7,18 +7,20 @@
     "node": ">=24 <25"
   },
   "scripts": {
-    "build": "pnpm -r build",
+    "build": "pnpm -r --if-present build",
     "dev": "pnpm -r --parallel dev",
-    "lint": "pnpm -r lint",
-    "test": "pnpm -r test",
-    "typecheck": "pnpm -r typecheck",
+    "lint": "pnpm -r --if-present lint",
+    "test": "pnpm -r --if-present test",
     "db:up": "docker compose --env-file .env -f infra/compose/docker-compose.yml up -d --wait",
     "db:down": "docker compose --env-file .env -f infra/compose/docker-compose.yml down",
     "db:reset": "docker compose --env-file .env -f infra/compose/docker-compose.yml down -v && pnpm db:up",
     "db:psql": "docker compose --env-file .env -f infra/compose/docker-compose.yml exec postgres psql -U postgres -d opsflow",
     "db:migrate": "pnpm --filter @opsflow/db migrate",
     "db:migration:new": "pnpm --filter @opsflow/db migration:new",
-    "db:test": "bash packages/db/tests/run-schema-tests.sh"
+    "db:test": "bash packages/db/tests/run-schema-tests.sh",
+    "dev:api": "pnpm --filter @opsflow/api dev",
+    "typecheck": "pnpm -r --if-present typecheck"
+
   },
   "devDependencies": {
     "typescript": "^7.0.2"
